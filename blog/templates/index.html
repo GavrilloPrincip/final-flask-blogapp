@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        {% if title %}
+            {{ title }}
+        {% else %}
+            Home
+        {% endif %}
+    </title>
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/bootstrap.css') }}" type = "text/css">
+    <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/main.css') }}" type = "text/css">
+</head>
+<body>
+    {% include "includes/navbar.html" %}
+    
+    {% block body %}
+    
+    {% endblock body %}
+    <script src = "{{url_for('static',filename = 'js/jquery.js')}}"></script>
+    <script src = "{{url_for('static',filename = 'js/popper.js')}}"></script>
+    <script src = "{{url_for('static',filename = 'js/bootstrap.js')}}"></script>
+
+</body>
+</html>

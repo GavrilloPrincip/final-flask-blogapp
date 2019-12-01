@@ -1,0 +1,46 @@
+{% extends "index.html" %}
+{% block body %}
+<div class="container mt-5">
+    <div class="row flex-column">
+        <div class="col-lg-5 mx-auto mt-4">
+            <form method="POST" action="">
+                <fieldset>
+                    <legend class="">
+                        <h1 class="display-4 text-center text-primary">Register Now!</h1>
+                        <img width="50%" height="auto" class="img-responsive mx-auto d-block" src = "{{ url_for('static',filename = 'img/register.png')}}">
+                    </legend>
+                    {% for field in  form %}
+                        {% if field.name == 'csrf_token' %}
+                            {{ field }}
+                        {% else %}
+                            <div class="form-group pt-2">
+                                {{ field.label}}
+                                {% if field.errors %}
+                                    {{ field(class="is-invalid form-control") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>                                
+                                {% else %}
+                                    {% if field.data == None %}
+                                        {{ field(class="form-control")}}                                        
+                                    {% else %}
+                                        {{ field(class="is-valid form-control") }}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </fieldset>
+                <button class="btn btn-outline-primary d-block mx-auto">Register</button>
+            </form>
+        </div>
+        <div class="col border-top mt-4 col-lg-5 mx-auto">
+            <small>Have you already have an account ? </small> <a href="/" class="text-danger"> Login</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock body %}
