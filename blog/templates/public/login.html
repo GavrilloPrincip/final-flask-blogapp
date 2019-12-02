@@ -10,7 +10,7 @@
                         <h1 class="display-4 text-center text-primary">LOG IN</h1>
                         <img width="40%" height="auto" src="{{ url_for('static',filename = 'img/login.png')}}" class="mx-auto d-block">
                     </legend>
-                        {{ form.csrf_token()}}
+                        {{ form.csrf_token}}
                         <div class = "form-group pt-2">
                             {{ form.email.label }}
                             {{ form.email( class = "form-control" ) }}
@@ -30,7 +30,7 @@
                 </form>
             </div>
             <div class="col-lg-5 mx-auto mt-3 border-top">
-                <small>Did you forget your password ?</small><a href="/" class="text-danger">Reset Password</a>
+                <small>Did you forget your password ? </small><a href="/" class="text-danger"> Reset Password</a>
             </div>
         </div>
     </div>

@@ -15,7 +15,11 @@
     <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/main.css') }}" type = "text/css">
 </head>
 <body>
+    <br>
     {% include "includes/navbar.html" %}
+    <div class="container mt-5">
+        {% include "includes/flash.html" %}
+    </div>
     
     {% block body %}
     
