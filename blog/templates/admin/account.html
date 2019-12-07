@@ -1,0 +1,137 @@
+{% extends "index.html" %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 mx-auto">
+            <div class="">
+                <img class="d-block mx-auto" src="{{img_src}}" alt="Card image cap" width="250px" height="250px">
+                <div class="card-body">
+                <h5 class="card-title">{{ user.username }}</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p class="card-text">son görülme : {{ user.last_seen }}</p>
+                {% if current_user.username == user.username %}
+                  <button class="btn btn-primary" data-target = "#details" data-toggle="modal">Update Details</button>
+                  <button class="btn btn-danger" data-target="#image" data-toggle="modal">Update İmage</button>
+                  <a class="btn btn-success" href="{{url_for('newarticle')}}">New Article</a>
+                {% else %}
+                  {% if user in current_user.followers.all() %}
+                      <a class="btn btn-danger" href="{{url_for('unfollow',username = user.username)}}">Unfollow</a>
+                    {% else %}
+                      <a class="btn btn-info" href="{{url_for('follow',username = user.username)}}">Follow</a>
+                  {% endif %}
+                {% endif %}
+            </div>
+        </div>   
+    </div>
+</div>
+<div class="container border-top mt-3 pt-3">
+  <div class="row">
+    <div class="col-md-5 mx-auto">
+      <h4 class="display-5">Postlar</h4>
+        {% for article in posts %}
+          <a href="{{url_for('show_article',article = article.id)}}">
+          <div class="media mt-5">
+            <img src="{{img_src}}" class="mr-3" alt="..." width="100px" height="100px">
+            <div class="media-body">
+              <h5 class="mt-0">{{ article.title }}</h5>
+              {{ article.content[:20]}}...
+              {% if article.user_id == current_user.id %}
+                <a class="btn btn-outline-info btn-sm float-right" href="{{url_for('update_article',article = article.id)}}">Update</a>
+                <a class="btn btn-outline-danger btn-sm float-right" href="{{url_for('delete_article',article = article.id)}}">Delete</a>
+              {% endif %}
+            </div>
+          </div>
+          </a>
+          
+        {% endfor %}
+    </div>
+  </div>
+</div>
+  
+
+<div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form method="POST" action="/updateDetails">
+              <form method="post" enctype = "multipart/form-data" action=''>
+                <fieldset class= "form-group">
+                    {{ form1.hidden_tag()}}
+                    <div class="form-group">
+                        {{ form1.username.label }}
+                        {% if form1.username.errors %}
+                            {{ form1.username(class = 'is-invalid form-control')}}
+                            <div class="invalid-feedback">
+                                {% for error in form1.username.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% elif form1.username.data == None and not(form1.username.errors) %}
+                            {{ form1.username(class = 'form-control', value = current_user.username)}}
+                        {% else %}
+                            {{ form1.username(class = 'is-valid form-control' ) }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form1.email.label }}
+                        {% if form1.email.errors %}
+                            {{ form1.email(class = 'is-invalid form-control')}}
+                            <div class="invalid-feedback">
+                                {% for error in form1.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% elif form1.email.data == None and not(form1.email.errors) %}
+                            {{ form1.email(class = 'form-control', value = current_user.email) }}
+                        {% else %}
+                            {{ form1.email(class = 'is-valid form-control' ) }}
+                        {% endif %}
+                    </div>
+                <div class="modal-footer">
+                    {{ form1.submit(class="btn btn-primary") }}
+                </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="image" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/updateImage" enctype='multipart/form-data'>
+            {{ form2.hidden_tag() }}
+            <div class="form-group">
+              {{ form2.avatar.label }}
+              {% if form2.avatar.errors %}
+                {{ form2.avatar(class="is-invalid form-control")}}
+                <div class="invalid-feedback">
+                  {% for error in form2.avatar.errors  %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% else %}
+                {{ form2.avatar(class="form-control") }}
+              {% endif %}
+            </div>
+            <div class="modal-footer">
+              {{ form2.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}

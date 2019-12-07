@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 mx-auto">
+            {% for article in posts %}
+                <a href="{{url_for('show_article',article = article.id)}}">
+                <div class="media mt-5 border-bottom">
+                    <img src="{{url_for('static',filename='img/userpic/' + article.author.avatar)}}" class="mr-3" alt="..." width="100px" height="100px">
+                    <div class="media-body">
+                        <h5 class="mt-0">{{ article.title }}</h5>
+                        {{ article.content[:20]}}...
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
